@@ -5,11 +5,9 @@
 </template>
 
 <script>
-import VueTable from './components/VueTable.vue'
+import VueTable from './components/naive/NaiveSticky.vue'
 export default {
-    components: {
-        VueTable
-    }
+    components: { VueTable }
 }
 </script>
 
