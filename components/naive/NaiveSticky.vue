@@ -38,7 +38,7 @@ import { generateData } from '../../data/generate-data.js'
 export default {
     data() {
         return {
-            reportData: generateData(3, 17, 100000)
+            reportData: generateData(3, 17, 100)
         }
     },
     created() {
