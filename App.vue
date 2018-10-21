@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import VueTable from './components/naive/NaiveSticky.vue'
+import VueTable from './components/virtual/VirtualAbsolute.vue'
 export default {
     components: { VueTable }
 }
@@ -28,3 +28,10 @@ body {
 }
 </style>
 
+<style>
+.body, body {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+</style>

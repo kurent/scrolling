@@ -11,15 +11,12 @@ export function generateData (fixedCols, dynamicCols, rows) {
             fixed: fixedColsArray.map((item, index) => 'Fixed header: ' + index),
             dynamic: dynamicColsArray.map((item, index) => 'Dynamic Header: ' + index),
         },
-        data: {
-            fixed: multiplyArray(dataFixed, rows / 100),
-            dynamic:  multiplyArray(dataDynamic, rows / 100)
-        }
+        data: multiplyArray(dataDynamic, rows / 100)
     }
 
     obj.headers.fixed = [''].concat(obj.headers.fixed)
-    obj.data.fixed = obj.data.fixed.map((row, index) => {
-        return [index + 1].concat(row)
+    obj.data = obj.data.map((row, index) => {
+        return [index + 1].concat(dataFixed[index], row)
     })
 
     return obj
