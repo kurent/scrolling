@@ -32,25 +32,26 @@
 
 <script>
 /* eslint-disable */
+import config from '../examples-config.js'
 import { generateData } from '../../data/generate-data.js'
 export default {
     data() {
         return {
-            fixedCols: 2,
-            dynamicCols: 17,
+            fixedCols: config.fixed,
+            dynamicCols: config.dynamic,
             reportData: null,
         }
     },
     computed: {
         tableWidth () {
-            return `${(this.fixedCols + this.dynamicCols) * 250}px`
+            return `${(this.fixedCols + this.dynamicCols) * config.cellWidth}px`
         },
         tableHeight () {
-            return `${(this.reportData.data) * 30}px`
+            return `${(this.reportData.data) * config.cellHeight}px`
         }
     },
     created() {
-        this.reportData = generateData(this.fixedCols, this.dynamicCols, 10000)
+        this.reportData = generateData(this.fixedCols, this.dynamicCols, config.rows)
         this.t1 = performance.now()
     },
     mounted() {

@@ -1,5 +1,7 @@
-const CELL_HEIGHT = 30
-const CELL_WIDTH = 200
+import config from '../examples-config.js'
+
+const CELL_HEIGHT = config.cellHeight
+const CELL_WIDTH = config.cellWidth
 const USE_TRANSFORM = false
 
 /* eslint-disable */
@@ -21,13 +23,15 @@ export default class Scroller {
         this.DOM = getDOM()
 
         this.init()
+        this.setupDOM()
         this.renderRows(this.scrollTop, true)
 
-        // window.addEventListener('scroll', this.onScroll.bind(this))
-        window.addEventListener('wheel', this.onScroll.bind(this))
+        window.addEventListener('scroll', this.onScroll.bind(this))
+        // this.DOM.cellsDynamicWrapper.addEventListener('wheel', this.onScroll.bind(this))
     }
 
     onScroll (event) {
+
         if (event.deltaY) {
             this.scrollTop = Math.min(Math.max(this.scrollTop + event.deltaY, 0), this.tableHeight)
         } else {
@@ -55,6 +59,7 @@ export default class Scroller {
             this.headers.fixed.forEach((element, x) => {
                 const elem = this.DOM.cell.cloneNode(false)
 
+                elem.classList.add('cell--fixed')
                 this.rowNodes[y][x] = elem
                 this.DOM.cellsFixed.appendChild(elem)
             });
@@ -66,12 +71,20 @@ export default class Scroller {
                 this.DOM.cellsDynamic.appendChild(elem)
             });
         }
-
         const indexes = this.indexes(this.scrollTop)
 
         this.prevIndexes = JSON.parse(JSON.stringify({ start: -indexes.stop, stop: indexes.start }))
-        
-        this.DOM.reportTable.style.height = `${this.tableHeight}px`
+
+    }
+
+    setupDOM () {
+        this.DOM.cellsFixed.style.height = `${this.tableHeight}px`
+        this.DOM.cellsFixed.style.width = `${this.fixedTableWidth}px`
+
+        this.DOM.cellsDynamicWrapper.style.height = `${this.tableHeight}px`
+
+        this.DOM.cellsDynamic.style.height = `${this.tableHeight}px`
+        this.DOM.cellsDynamic.style.width = `${this.dynamicTableWidth}px`
     }
 
     renderRows (scrollTop, init) {
@@ -158,7 +171,7 @@ export default class Scroller {
     }
     
     get rowsFitScreen () {
-        return Math.ceil(this.screenHeight / CELL_HEIGHT) + 100
+        return Math.ceil(this.screenHeight / CELL_HEIGHT)
     }
 
     indexes (scrollTop) {

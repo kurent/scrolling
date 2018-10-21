@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import NaiveSticky from './components/naive/NaiveSticky.vue'
-import VirtualReuse from './components/virtual/VirtualReuse.vue'
+import VirtualReuse from './components/virtual/reuse/VirtualReuse.vue'
 
 Vue.use(Router)
 

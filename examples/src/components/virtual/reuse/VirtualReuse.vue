@@ -5,25 +5,27 @@
         </div>
 
         <div id="report-table">
-            <div id="headers-fixed"></div>
-            <div id="headers-dynamic"></div>
-            
-            <div id="cells-fixed"></div>
+            <div id="cells-fixed">
+                
+            </div>
             <div id="cells-dynamic__wrapper">
-                <div id="cells-dynamic"></div>
+                <div id="cells-dynamic">
+                    <div id="headers-dynamic"></div>
+                </div>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-import { generateData } from '../../data/generate-data.js'
-import Scroller from './Scroller.js'
+import config from '../../examples-config.js'
+import { generateData } from '../../../data/generate-data.js'
+import Scroller from '../Scroller.js'
 
 export default {
     data() {
         return {
-            reportData: generateData(0, 1, 1000),
+            reportData: generateData(config.fixed, config.dynamic, config.rows),
             scroller: null,
         }
     },
@@ -49,53 +51,44 @@ export default {
 }
 
 #report-table {
-    position: absolute;
-    /* top: 0;
-    left: 0;
+    top: 0;
     right: 0;
     bottom: 0;
-    overflow: hidden; */
+    left: 0;
+    
+}
+
+#cells-fixed {
+    position: absolute;
+    z-index: 700;
+    pointer-events: none;
+}
+
+#cells-dynamic {
+    width: 100%;
+    position: absolute;
+}
+
+#cells-dynamic__wrapper {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    overflow-x: scroll;
 }
 
 #headers-fixed {
     position: absolute;
     z-index: 1000;
+    pointer-events: none;
 }
 
 #headers-dynamic {
     position: absolute;
-    /* top: 0;
-    right: 0;
-    left: 0; */
     z-index: 500;
 }
 
-#cells-fixed {
-    height: 100%;
-    position: absolute;
-    /* left: 0;
-    top: 0; */
-    z-index: 700;
-    /* backface-visibility: hidden;
-    will-change: transform; */
-}
-
-#cells-dynamic__wrapper {
-    position: absolute;
-    /* top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0; */
-}
-
-#cells-dynamic {
-    height: 100%;
-    width: 100%;
-    position: absolute;
-    /* backface-visibility: hidden;
-    will-change: transform;
-    contain: layout size style; */
-}
 
 .cell {
     position: absolute;
@@ -109,6 +102,10 @@ export default {
     box-sizing: border-box;
     border-right: 1px solid #eee;
     border-bottom: 1px solid #eee;
+}
+
+.cell--fixed {
+    background: #eee;
 }
 
 </style>
