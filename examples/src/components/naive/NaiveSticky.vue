@@ -1,7 +1,6 @@
 <template>
-    <div style="position: relative;">
-
-        <div class="table">
+    <div>
+        <div class="table" :style="{ width: tableWidth, height: tableHeight }">
 
             <div class="fixed-columns">
                 <div class="fixed-headers">
@@ -10,8 +9,8 @@
                     </div>
                 </div>
 
-                <div v-for="(row, rowIndex) in reportData.data.fixed" :key="rowIndex" class="row">
-                    <div v-for="(col, colIndex) in row" :key="`${rowIndex}-${colIndex}`" class="col col--fixed" :data-row-id="rowIndex" :data-col-id="colIndex">{{ col }}</div>
+                <div v-for="(row, rowIndex) in reportData.data" :key="rowIndex" class="row">
+                    <div v-for="(colIndex) in fixedCols + 1" :key="`${rowIndex}-${colIndex - 1}`" class="col col--fixed" :data-row-id="rowIndex" :data-col-id="colIndex - 1">{{ row[colIndex - 1] }}</div>
                 </div>
             </div>
 
@@ -22,13 +21,12 @@
                     </div>
                 </div>
 
-                <div v-for="(row, rowIndex) in reportData.data.dynamic" :key="rowIndex" class="row">
-                    <div v-for="(col, colIndex) in row" :key="`${rowIndex}-${colIndex}`" class="col col--dynamic" :data-row-id="rowIndex" :data-col-id="colIndex">{{ col }}</div>
+                <div v-for="(row, rowIndex) in reportData.data" :key="rowIndex" class="row">
+                    <div v-for="(colIndex) in dynamicCols" :key="`${rowIndex}-${colIndex - 1}`" class="col col--dynamic" :data-row-id="rowIndex" :data-col-id="colIndex - 1">{{ row[colIndex - 1] }}</div>
                 </div>
             </div>
 
         </div>
-
     </div>
 </template>
 
@@ -38,12 +36,22 @@ import { generateData } from '../../data/generate-data.js'
 export default {
     data() {
         return {
-            reportData: generateData(3, 17, 100)
+            fixedCols: 2,
+            dynamicCols: 17,
+            reportData: null,
+        }
+    },
+    computed: {
+        tableWidth () {
+            return `${(this.fixedCols + this.dynamicCols) * 250}px`
+        },
+        tableHeight () {
+            return `${(this.reportData.data) * 30}px`
         }
     },
     created() {
+        this.reportData = generateData(this.fixedCols, this.dynamicCols, 10000)
         this.t1 = performance.now()
-        console.log('created:', this.t1)
     },
     mounted() {
         this.t2 = performance.now()
@@ -70,8 +78,21 @@ export default {
 }
 
 .table {
-    position: relative;
+    /* top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0; */
     display: flex;
+}
+
+
+.fixed-headers,
+.dynamic-headers {
+    position: sticky;
+    position: -webkit-sticky;
+    top: 0;
+    display: flex;
+    z-index: 100;
 }
 
 .fixed-columns {
@@ -86,13 +107,6 @@ export default {
     z-index: 10;
 }
 
-.fixed-headers,
-.dynamic-headers {
-    position: sticky;
-    position: -webkit-sticky;
-    top: 0;
-    display: flex;
-}
 
 .row__header {
     background: #eee;

@@ -14,9 +14,11 @@ export function generateData (fixedCols, dynamicCols, rows) {
         data: multiplyArray(dataDynamic, rows / 100)
     }
 
+    let objFixed = multiplyArray(dataFixed, rows / 100)
+
     obj.headers.fixed = [''].concat(obj.headers.fixed)
     obj.data = obj.data.map((row, index) => {
-        return [index + 1].concat(dataFixed[index], row)
+        return [index + 1].concat(objFixed[index], row)
     })
 
     return obj
