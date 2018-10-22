@@ -40,32 +40,35 @@ export default class ScrollerNaive extends Scroller {
     }
 
     switchRows (y, offset) {
-        let fragmentFixed = document.createDocumentFragment()
-        let fragmentDynamic = document.createDocumentFragment()
 
         let createFixedRow = function (element, x) {
             const text = this.getRowData(y, x)
-            let node = this.cloneCell(y, x, 'cell--fixed')
+            
+            let node = document.createElement('div')
+            node.classList.add('cell', 'cell--fixed')
             node = this.updateCell(node, text, y, x)
             node = this.positionCell(node, y, x)
-            fragmentFixed.appendChild(node)
+            this.DOM.cellsFixed.appendChild(node)
         }
 
         let createDynamicRow = function (element, index) {
             const x = index + this.headers.fixed.length
             const text = this.getRowData(y, x)
-            let node = this.cloneCell(y, x)
+            
+            let node = document.createElement('div')
+            node.classList.add('cell')
             node = this.updateCell(node, text, y, x)
             node = this.positionCell(node, y, x)
-            fragmentDynamic.appendChild(node)
+            this.DOM.cellsDynamic.appendChild(node)
         }
 
         this.headers.fixed.map(createFixedRow.bind(this))
         this.headers.dynamic.map(createDynamicRow.bind(this))
 
-        this.DOM.cellsFixed.appendChild(fragmentFixed)
-        this.DOM.cellsDynamic.appendChild(fragmentDynamic)
+        this.deleteRows(y, offset)
+    }
 
+    deleteRows (y, offset) {
         let deleteFixedRow = this.DOM.cellsFixed.querySelectorAll(`[data-row-id="${y + offset}"]`)
         let deleteDynamicRow = this.DOM.cellsDynamic.querySelectorAll(`[data-row-id="${y + offset}"]`)
 

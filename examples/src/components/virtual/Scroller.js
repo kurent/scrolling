@@ -24,7 +24,7 @@ export default class Scroller {
         this.init()
         this.setupDOM()
         this.renderRows(this.scrollTop, true)
-        this.listenOn('scroll')
+        this.listenOn('cellsDynamicWrapper')
     }
 
     listenOn (event) {
@@ -169,7 +169,7 @@ export default class Scroller {
 
     positionCell (node, y, x) {
         if (config.useTransform) {
-            node.style.transform = `translate(${x * CELL_WIDTH}px, ${y * CELL_HEIGHT}px)`
+            node.style.transform = `translate3D(${x * CELL_WIDTH}px, ${y * CELL_HEIGHT}px, 0)`
         } else {
             node.style.top = `${y * CELL_HEIGHT}px`;
             node.style.left = `${x * CELL_WIDTH}px`;

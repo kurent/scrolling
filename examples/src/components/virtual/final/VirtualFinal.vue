@@ -86,24 +86,4 @@ export default {
     position: absolute;
     z-index: 500;
 }
-
-
-.cell {
-    position: absolute;
-    width: 250px;
-    height: 30px;
-    line-height: 30px;
-    padding: 0 20px;
-    font-size: 12px;
-    font-weight: 500;
-    user-select: none;
-    box-sizing: border-box;
-    border-right: 1px solid #eee;
-    border-bottom: 1px solid #eee;
-}
-
-.cell--fixed {
-    background: #eee;
-}
-
 </style>

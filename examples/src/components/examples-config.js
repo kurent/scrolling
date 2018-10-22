@@ -1,10 +1,10 @@
 let config = {
     fixed: 2,
-    dynamic: 17,
+    dynamic: 10,
     rows: 10000,
     cellWidth: 250,
     cellHeight: 30,
-    useTransform: false,
+    useTransform: true,
     capScrolling: 0,
 }
 
