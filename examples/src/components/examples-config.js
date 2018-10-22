@@ -1,6 +1,6 @@
 let config = {
-    fixed: 2,
-    dynamic: 10,
+    fixed: 3,
+    dynamic: 17,
     rows: 10000,
     cellWidth: 250,
     cellHeight: 30,

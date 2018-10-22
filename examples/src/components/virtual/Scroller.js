@@ -2,21 +2,21 @@ import config from '../examples-config.js'
 
 const CELL_HEIGHT = config.cellHeight
 const CELL_WIDTH = config.cellWidth
-const USE_TRANSFORM = false
+const USE_TRANSFORM = true
 
 /* eslint-disable */
 
 export default class Scroller {
-    constructor (reportData) {
+    constructor(reportData) {
         this.headers = reportData.headers
         this.rows = reportData.data
-        
-        this.prevIndexes = { start: null, stop: null}
+
+        this.prevIndexes = { start: null, stop: null }
         this.scrollTop = 0
 
         this.headerNodes = []
         this.rowNodes = [...Array(this.rows.length).keys()].map(i => [...Array(this.columns)])
-        
+
         this.screenHeight = screen.height
         this.screenWidth = screen.width
 
@@ -43,43 +43,34 @@ export default class Scroller {
         if (indexes.start === this.prevIndexes.start || indexes.stop > this.rows.length) {
             return
         }
-        
+
         if (!this.rAF) {
             this.rAF = window.requestAnimationFrame(() => {
                 this.renderRows.call(this, this.scrollTop)
                 this.rAF = false
             })
         }
-        
+
     }
 
     init () {
         for (let y = 0; y < this.rowsFitScreen; y++) {
-            
+
             this.headers.fixed.forEach((element, x) => {
-                const elem = this.DOM.cell.cloneNode(false)
-
-                elem.classList.add('cell--fixed')
-                elem.setAttribute('data-row-id', y)
-                elem.setAttribute('data-col-id', x)
-
+                const elem = this.cloneCell(x, y, 'cell--fixed')
                 this.rowNodes[y][x] = elem
                 this.DOM.cellsFixed.appendChild(elem)
             });
 
             this.headers.dynamic.forEach((element, x) => {
-                const elem = this.DOM.cell.cloneNode(false)
-                elem.setAttribute('data-row-id', y)
-                elem.setAttribute('data-col-id', this.headers.fixed.length + x)
-                
+                const elem = this.cloneCell(this.headers.fixed.length + x, y)
                 this.rowNodes[y][this.headers.fixed.length + x] = elem
                 this.DOM.cellsDynamic.appendChild(elem)
             });
         }
+
         const indexes = this.indexes(this.scrollTop)
-
         this.prevIndexes = JSON.parse(JSON.stringify({ start: -indexes.stop, stop: indexes.start }))
-
     }
 
     setupDOM () {
@@ -96,7 +87,7 @@ export default class Scroller {
     renderRows (scrollTop, init) {
         const indexes = this.indexes(scrollTop)
         const diff = indexes.start - this.prevIndexes.start
-        
+
         if (diff > 0) {
             const start = init ? indexes.start : this.prevIndexes.start
             const end = init ? start + diff : indexes.start
@@ -105,17 +96,11 @@ export default class Scroller {
             for (let y = start; y < end; y++) {
                 const row = this.rowNodes[y]
 
-                row.map((node, x) => {                    
+                row.map((node, x) => {
                     node.textContent = this.rows[y + offset][x]
                     node.setAttribute('data-row-id', y)
                     node.setAttribute('data-col-id', x)
-
-                    if (USE_TRANSFORM) {
-                        node.style.transform = `translate(${ x * CELL_WIDTH }px, ${ (y + offset) * CELL_HEIGHT }px)`
-                    } else {
-                        node.style.left = `${ x * CELL_WIDTH }px`;
-                        node.style.top = `${ (y + offset) * CELL_HEIGHT }px`;
-                    }
+                    node = this.positionCell(node, x, y + offset)
                     return node
                 })
 
@@ -138,13 +123,7 @@ export default class Scroller {
                     node.textContent = this.rows[y - offset][x]
                     node.setAttribute('data-row-id', y)
                     node.setAttribute('data-col-id', x)
-
-                    if (USE_TRANSFORM) {
-                        node.style.transform = `translate(${ x * CELL_WIDTH }px, ${ (y - offset) * CELL_HEIGHT }px)`
-                    } else {
-                        node.style.left = `${ x * CELL_WIDTH }px`;
-                        node.style.top = `${ (y - offset) * CELL_HEIGHT }px`;
-                    }
+                    node = this.positionCell(node, x, y - offset)
                     return node
                 })
 
@@ -158,6 +137,29 @@ export default class Scroller {
         }
 
         return false
+    }
+
+    cloneCell (x, y, classes) {
+        const elem = this.DOM.cell.cloneNode(false)
+        elem.setAttribute('data-row-id', y)
+        elem.setAttribute('data-col-id', x)
+
+        if (classes) {
+            elem.classList.add(classes)
+        }
+
+        return elem
+    }
+
+    positionCell (node, x, y) {
+        if (USE_TRANSFORM) {
+            node.style.transform = `translate(${x * CELL_WIDTH}px, ${y * CELL_HEIGHT}px)`
+        } else {
+            node.style.left = `${x * CELL_WIDTH}px`;
+            node.style.top = `${y * CELL_HEIGHT}px`;
+        }
+
+        return node
     }
 
     get fixedTableWidth () {
@@ -175,7 +177,7 @@ export default class Scroller {
     get tableWidth () {
         return this.fixedTableWidth + this.dynamicTableWidth
     }
-    
+
     get rowsFitScreen () {
         return Math.ceil(this.screenHeight / CELL_HEIGHT)
     }
@@ -185,7 +187,7 @@ export default class Scroller {
 
         return {
             start,
-            stop: start + this.rowsFitScreen 
+            stop: start + this.rowsFitScreen
         }
     }
 
@@ -196,13 +198,13 @@ export default class Scroller {
 
 function getDOM () {
     return {
-        'cell' : document.querySelector('#templates > .cell'),
-        'reportTable' : document.querySelector('#report-table'),
-        'headersFixed' : document.querySelector('#headers-fixed'),
-        'headersDynamic' : document.querySelector('#headers-dynamic'),
-        'cellsFixed' : document.querySelector('#cells-fixed'),
-        'cellsDynamicWrapper' : document.querySelector('#cells-dynamic__wrapper'),
-        'cellsDynamic' : document.querySelector('#cells-dynamic'),
+        'cell': document.querySelector('#templates > .cell'),
+        'reportTable': document.querySelector('#report-table'),
+        'headersFixed': document.querySelector('#headers-fixed'),
+        'headersDynamic': document.querySelector('#headers-dynamic'),
+        'cellsFixed': document.querySelector('#cells-fixed'),
+        'cellsDynamicWrapper': document.querySelector('#cells-dynamic__wrapper'),
+        'cellsDynamic': document.querySelector('#cells-dynamic'),
     }
 }
 
