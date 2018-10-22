@@ -2,9 +2,9 @@
   <div id="app">
     <div id="nav">
       <router-link to="/naive">Naive</router-link> |
-      <router-link to="/virtual">Virtual naive</router-link> |
+      <router-link to="/virtual-naive">Virtual naive</router-link> |
       <router-link to="/virtual-reuse">Virtual reuse</router-link> |
-      <router-link to="/fianl">Virtual final</router-link> |
+      <router-link to="/final">Virtual final</router-link> |
     </div>
     <router-view/>
   </div>

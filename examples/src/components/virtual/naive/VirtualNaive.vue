@@ -5,12 +5,13 @@
         </div>
 
         <div id="report-table">
-            <div id="headers-fixed"></div>
-            <div id="headers-dynamic"></div>
-            
-            <div id="cells-fixed"></div>
+            <div id="cells-fixed">
+                
+            </div>
             <div id="cells-dynamic__wrapper">
-                <div id="cells-dynamic"></div>
+                <div id="cells-dynamic">
+                    <div id="headers-dynamic"></div>
+                </div>
             </div>
         </div>
     </div>
@@ -18,8 +19,8 @@
 
 <script>
 import config from '../../examples-config.js'
-import { generateData } from '../../data/generate-data.js'
-import Scroller from '../Scroller.js'
+import { generateData } from '../../../data/generate-data.js'
+import ScrollerNaive from './ScrollerNaive.js'
 
 export default {
     data() {
@@ -32,7 +33,7 @@ export default {
         
     },
     mounted() {
-        this.scroller = new Scroller(this.reportData)
+        this.scroller = new ScrollerNaive(this.reportData)
     }
 }
 </script>
@@ -50,7 +51,29 @@ export default {
 }
 
 #report-table {
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    
+}
+
+#cells-fixed {
     position: absolute;
+    z-index: 700;
+}
+
+#cells-dynamic {
+    width: 100%;
+    position: absolute;
+}
+
+#cells-dynamic__wrapper {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    overflow-x: scroll;
 }
 
 #headers-fixed {
@@ -63,21 +86,6 @@ export default {
     z-index: 500;
 }
 
-#cells-fixed {
-    height: 100%;
-    position: absolute;
-    z-index: 700;
-}
-
-#cells-dynamic__wrapper {
-    position: absolute;
-}
-
-#cells-dynamic {
-    height: 100%;
-    width: 100%;
-    position: absolute;
-}
 
 .cell {
     position: absolute;
@@ -91,6 +99,10 @@ export default {
     box-sizing: border-box;
     border-right: 1px solid #eee;
     border-bottom: 1px solid #eee;
+}
+
+.cell--fixed {
+    background: #eee;
 }
 
 </style>

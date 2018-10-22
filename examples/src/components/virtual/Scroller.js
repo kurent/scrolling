@@ -60,12 +60,17 @@ export default class Scroller {
                 const elem = this.DOM.cell.cloneNode(false)
 
                 elem.classList.add('cell--fixed')
+                elem.setAttribute('data-row-id', y)
+                elem.setAttribute('data-col-id', x)
+
                 this.rowNodes[y][x] = elem
                 this.DOM.cellsFixed.appendChild(elem)
             });
 
             this.headers.dynamic.forEach((element, x) => {
                 const elem = this.DOM.cell.cloneNode(false)
+                elem.setAttribute('data-row-id', y)
+                elem.setAttribute('data-col-id', this.headers.fixed.length + x)
                 
                 this.rowNodes[y][this.headers.fixed.length + x] = elem
                 this.DOM.cellsDynamic.appendChild(elem)
@@ -102,6 +107,8 @@ export default class Scroller {
 
                 row.map((node, x) => {                    
                     node.textContent = this.rows[y + offset][x]
+                    node.setAttribute('data-row-id', y)
+                    node.setAttribute('data-col-id', x)
 
                     if (USE_TRANSFORM) {
                         node.style.transform = `translate(${ x * CELL_WIDTH }px, ${ (y + offset) * CELL_HEIGHT }px)`
@@ -129,6 +136,8 @@ export default class Scroller {
                 const row = this.rowNodes[y]
                 row.map((node, x) => {
                     node.textContent = this.rows[y - offset][x]
+                    node.setAttribute('data-row-id', y)
+                    node.setAttribute('data-col-id', x)
 
                     if (USE_TRANSFORM) {
                         node.style.transform = `translate(${ x * CELL_WIDTH }px, ${ (y - offset) * CELL_HEIGHT }px)`
@@ -149,10 +158,6 @@ export default class Scroller {
         }
 
         return false
-    }
-
-    setupTable () {
-        
     }
 
     get fixedTableWidth () {
