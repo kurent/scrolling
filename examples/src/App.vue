@@ -3,8 +3,9 @@
     <div id="nav">
       <router-link to="/naive">Naive</router-link> |
       <router-link to="/virtual-naive">Virtual naive</router-link> |
+      <router-link to="/virtual-naive-improved">Virtual naive improved</router-link> |
       <router-link to="/virtual-reuse">Virtual reuse</router-link> |
-      <router-link to="/final">Virtual final</router-link> |
+      <router-link to="/virtual-final">Virtual final</router-link> |
     </div>
     <router-view/>
   </div>
