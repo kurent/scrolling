@@ -82,6 +82,7 @@ export default class Scroller {
         this.DOM.cellsFixed.style.width = `${this.fixedTableWidth}px`
 
         this.DOM.cellsDynamicWrapper.style.height = `${this.tableHeight}px`
+        // this.DOM.cellsDynamicWrapper.style.width = `${this.tableWidth}px`
 
         this.DOM.cellsDynamic.style.height = `${this.tableHeight}px`
         this.DOM.cellsDynamic.style.width = `${this.dynamicTableWidth}px`

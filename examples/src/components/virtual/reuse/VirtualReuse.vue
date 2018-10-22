@@ -61,7 +61,6 @@ export default {
 #cells-fixed {
     position: absolute;
     z-index: 700;
-    pointer-events: none;
 }
 
 #cells-dynamic {
@@ -73,7 +72,6 @@ export default {
     position: absolute;
     top: 0;
     right: 0;
-    bottom: 0;
     left: 0;
     overflow-x: scroll;
 }
@@ -81,7 +79,6 @@ export default {
 #headers-fixed {
     position: absolute;
     z-index: 1000;
-    pointer-events: none;
 }
 
 #headers-dynamic {
