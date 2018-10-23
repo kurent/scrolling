@@ -31,7 +31,7 @@ export default {
         
     },
     mounted() {
-        this.scroller = new Scroller(this.reportData)
+        this.scroller = new Scroller(this.reportData, { useTransform: false })
     }
 }
 </script>

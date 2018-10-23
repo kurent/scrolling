@@ -42,14 +42,17 @@ export default class ScrollerNaive extends Scroller {
     switchRows (y, offset) {
         let fragmentFixed = document.createDocumentFragment()
         let fragmentDynamic = document.createDocumentFragment()
+        let rowFixed = this.cloneRow(y)
+        let rowDynamic = this.cloneRow(y)
 
         let createFixedRow = function (element, x) {
             const text = this.getRowData(y, x)
             let node = this.cloneCell(y, x, 'cell--fixed')
             node = this.updateCell(node, text, y, x)
             node = this.positionCell(node, y, x)
-            fragmentFixed.appendChild(node)
+            rowFixed.appendChild(node)
         }
+        
 
         let createDynamicRow = function (element, index) {
             const x = index + this.headers.fixed.length
@@ -57,27 +60,46 @@ export default class ScrollerNaive extends Scroller {
             let node = this.cloneCell(y, x)
             node = this.updateCell(node, text, y, x)
             node = this.positionCell(node, y, x)
-            fragmentDynamic.appendChild(node)
+            rowDynamic.appendChild(node)
         }
 
         this.headers.fixed.map(createFixedRow.bind(this))
         this.headers.dynamic.map(createDynamicRow.bind(this))
 
+        fragmentFixed.appendChild(rowFixed)
+        fragmentDynamic.appendChild(rowDynamic)
+
         this.DOM.cellsFixed.appendChild(fragmentFixed)
         this.DOM.cellsDynamic.appendChild(fragmentDynamic)
 
-        let deleteFixedRow = this.DOM.cellsFixed.querySelectorAll(`[data-row-id="${y + offset}"]`)
-        let deleteDynamicRow = this.DOM.cellsDynamic.querySelectorAll(`[data-row-id="${y + offset}"]`)
+        const deleteFixedRow = this.DOM.cellsFixed.querySelector(`.row[data-row-id="${y + offset}"]`)
+        const deleteDynamicRow = this.DOM.cellsDynamic.querySelector(`.row[data-row-id="${y + offset}"]`)
 
-        let deleteFixedRowFn = function (element) {
-            this.DOM.cellsFixed.removeChild(element)
+        this.DOM.cellsFixed.removeChild(deleteFixedRow)
+        this.DOM.cellsDynamic.removeChild(deleteDynamicRow)
+    }
+
+    init () {
+        for (let y = 0; y < this.rowsFitScreen; y++) {
+            let rowFixed = this.cloneRow(y)
+            let rowDynamic = this.cloneRow(y)
+
+            this.headers.fixed.forEach((element, x) => {
+                const elem = this.cloneCell(y,x , 'cell--fixed')
+                this.rowNodes[y][x] = elem
+                rowFixed.appendChild(elem)
+                this.DOM.cellsFixed.appendChild(rowFixed)
+            });
+
+            this.headers.dynamic.forEach((element, x) => {
+                const elem = this.cloneCell(y, this.headers.fixed.length + x)
+                this.rowNodes[y][this.headers.fixed.length + x] = elem
+                rowDynamic.appendChild(elem)
+                this.DOM.cellsDynamic.appendChild(rowDynamic)
+            });
         }
 
-        let deleteDynamicRowFn = function (element) {
-            this.DOM.cellsDynamic.removeChild(element)
-        }
-
-        deleteFixedRow.forEach(deleteFixedRowFn.bind(this))
-        deleteDynamicRow.forEach(deleteDynamicRowFn.bind(this))
+        const indexes = this.indexes(this.scrollTop)
+        this.prevIndexes = JSON.parse(JSON.stringify({ start: -indexes.stop, stop: indexes.start }))
     }
 }

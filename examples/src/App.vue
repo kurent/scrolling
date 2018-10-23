@@ -5,6 +5,7 @@
       <router-link to="/virtual-naive">Virtual naive</router-link> |
       <router-link to="/virtual-naive-improved">Virtual naive improved</router-link> |
       <router-link to="/virtual-reuse">Virtual reuse</router-link> |
+      <router-link to="/virtual-reuse-no-transform">Virtual reuse no transform</router-link> |
       <router-link to="/virtual-final">Virtual final</router-link> |
     </div>
     <router-view/>

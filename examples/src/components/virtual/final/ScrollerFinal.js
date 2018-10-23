@@ -2,8 +2,8 @@ import Scroller from '../Scroller'
 import config from '../../examples-config'
 
 export default class ScrollerFinal extends Scroller {
-    constructor(reportData) {
-        super(reportData)
+    constructor(reportData, options) {
+        super(reportData, options)
         this.scrollLeft = 0
     }
 
@@ -16,7 +16,7 @@ export default class ScrollerFinal extends Scroller {
             event.preventDefault()
         }
 
-        let deltaY = config.capScrolling ? Math.min(event.deltaY, 500) : event.deltaY
+        let deltaY = config.capScrolling ? Math.min(event.deltaY, config.capScrolling) : event.deltaY
 
         this.scrollTop = Math.min(Math.max(this.scrollTop + deltaY, 0), this.tableHeight - this.screenHeight)
         this.scrollLeft = Math.min(Math.max(this.scrollLeft + event.deltaX, 0), this.dynamicTableWidth - 2 * this.fixedTableWidth)
@@ -50,5 +50,7 @@ export default class ScrollerFinal extends Scroller {
 
         // this.DOM.cellsDynamic.style.height = `${this.tableHeight}px`
         // this.DOM.cellsDynamic.style.width = `${this.dynamicTableWidth}px`
+
+        // this.DOM.reportTableWrapper.style.height = `${this.tableHeight}px`
     }
 }

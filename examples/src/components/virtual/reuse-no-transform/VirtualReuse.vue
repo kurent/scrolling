@@ -1,7 +1,6 @@
 <template>
     <div class="report-table-wrapper">
         <div id="templates">
-            <div class="row"></div>
             <div class="cell"></div>
         </div>
 
@@ -21,7 +20,7 @@
 <script>
 import config from '../../examples-config.js'
 import { generateData } from '../../../data/generate-data.js'
-import ScrollerNaive from './ScrollerNaiveImproved.js'
+import Scroller from '../Scroller.js'
 
 export default {
     data() {
@@ -34,7 +33,7 @@ export default {
         
     },
     mounted() {
-        this.scroller = new ScrollerNaive(this.reportData)
+        this.scroller = new Scroller(this.reportData, { useTransform: false })
     }
 }
 </script>
@@ -86,5 +85,4 @@ export default {
     position: absolute;
     z-index: 500;
 }
-
 </style>

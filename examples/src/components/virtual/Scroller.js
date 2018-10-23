@@ -6,7 +6,8 @@ const CELL_WIDTH = config.cellWidth
 /* eslint-disable */
 
 export default class Scroller {
-    constructor(reportData) {
+    constructor(reportData, options) {
+        this.config = Object.assign({}, config, options)
         this.headers = reportData.headers
         this.rows = reportData.data
 
@@ -24,16 +25,20 @@ export default class Scroller {
         this.init()
         this.setupDOM()
         this.renderRows(this.scrollTop, true)
-        this.listenOn('cellsDynamicWrapper')
+        this.onScrollFn = this.onScroll.bind(this)
+        this.listenOn('scroll')
     }
 
     listenOn (event) {
         if ('scroll') {
-            window.addEventListener('scroll', this.onScroll.bind(this))
+            this.onScrollFnType = 'scroll'
+            window.addEventListener('scroll', this.onScrollFn)
         } else if ('reportTable') {
-            this.DOM.reportTable.addEventListener('wheel', this.onScroll.bind(this))
+            this.onScrollFnType = 'reportTable'
+            this.DOM.reportTable.addEventListener('wheel', this.onScrollFn)
         } else if ('cellsDynamicWrapper') {
-            this.DOM.cellsDynamicWrapper.addEventListener('wheel', this.onScroll.bind(this))
+            this.onScrollFnType = 'cellsDynamicWrapper'
+            this.DOM.cellsDynamicWrapper.addEventListener('wheel', this.onScrollFn)
         }
     }
 
@@ -167,8 +172,19 @@ export default class Scroller {
         return elem
     }
 
+    cloneRow (y, classes) {
+        const elem = this.DOM.row.cloneNode(false)
+        elem.setAttribute('data-row-id', y)
+
+        if (classes) {
+            elem.classList.add(classes)
+        }
+
+        return elem
+    }
+
     positionCell (node, y, x) {
-        if (config.useTransform) {
+        if (this.config.useTransform) {
             node.style.transform = `translate3D(${x * CELL_WIDTH}px, ${y * CELL_HEIGHT}px, 0)`
         } else {
             node.style.top = `${y * CELL_HEIGHT}px`;
@@ -218,11 +234,17 @@ export default class Scroller {
     get columns () {
         return this.headers.fixed.length + this.headers.dynamic.length
     }
+
+    destroy () {
+
+    }
 }
 
 function getDOM () {
     return {
         'cell': document.querySelector('#templates > .cell'),
+        'row': document.querySelector('#templates > .row'),
+        'reportTableWrapper': document.querySelector('.report-table-wrapper'),
         'reportTable': document.querySelector('#report-table'),
         'headersFixed': document.querySelector('#headers-fixed'),
         'headersDynamic': document.querySelector('#headers-dynamic'),

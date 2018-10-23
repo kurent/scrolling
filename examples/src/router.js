@@ -4,6 +4,7 @@ import NaiveSticky from './components/naive/NaiveSticky.vue'
 import VirtualNaive from './components/virtual/naive/VirtualNaive.vue'
 import VirtualNaiveImproved from './components/virtual/naive-improved/VirtualNaiveImproved.vue'
 import VirtualReuse from './components/virtual/reuse/VirtualReuse.vue'
+import VirtualReuseNoTransform from './components/virtual/reuse-no-transform/VirtualReuse.vue'
 import VirtualFinal from './components/virtual/final/VirtualFinal.vue'
 
 Vue.use(Router)
@@ -29,6 +30,11 @@ export default new Router({
       path: '/virtual-reuse',
       name: 'virtual-reuse',
       component: VirtualReuse
+    },
+    {
+      path: '/virtual-reuse-no-transform',
+      name: 'virtual-reuse-no-transform',
+      component: VirtualReuseNoTransform
     },
     {
       path: '/virtual-final',
