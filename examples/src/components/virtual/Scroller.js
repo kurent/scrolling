@@ -185,6 +185,7 @@ export default class Scroller {
 
     positionCell (node, y, x) {
         if (this.config.useTransform) {
+            // node.style.transform = `translate(${x * CELL_WIDTH}px, ${y * CELL_HEIGHT}px)`
             node.style.transform = `translate3D(${x * CELL_WIDTH}px, ${y * CELL_HEIGHT}px, 0)`
         } else {
             node.style.top = `${y * CELL_HEIGHT}px`;

@@ -8,7 +8,7 @@ export default class ScrollerFinal extends Scroller {
     }
 
     listenOn () {
-        this.DOM.reportTable.addEventListener('wheel', this.onScroll.bind(this))
+        this.DOM.reportTable.addEventListener('wheel', this.onScroll.bind(this), true)
     }
 
     onScroll (event) {
@@ -39,6 +39,9 @@ export default class ScrollerFinal extends Scroller {
     doScroll (x, y) {
         this.DOM.cellsFixed.style.transform = `translate3D(0, ${-y}px, 0)`
         this.DOM.cellsDynamic.style.transform = `translate3D(${-x}px, ${-y}px, 0)`
+
+        // this.DOM.cellsFixed.style.transform = `translateY(${-y}px)`
+        // this.DOM.cellsDynamic.style.transform = `translate(${-x}px, ${-y}px)`
     }
 
     setupDOM () {

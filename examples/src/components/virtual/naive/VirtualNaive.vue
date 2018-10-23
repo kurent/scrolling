@@ -25,7 +25,7 @@ import ScrollerNaive from './ScrollerNaive.js'
 export default {
     data() {
         return {
-            reportData: generateData(config.fixed, config.dynamic, config.rows),
+            reportData: generateData(this.$route.query.colFixed ? this.$route.query.colFixed : config.fixed, this.$route.query.colDynamic ? this.$route.query.colDynamic : config.dynamic, config.rows),
             scroller: null,
         }
     },
