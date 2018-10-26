@@ -51,7 +51,7 @@ export default {
         }
     },
     created() {
-        this.reportData = generateData(this.fixedCols, this.dynamicCols, config.rows)
+        this.reportData = generateData(this.fixedCols, this.dynamicCols, 1000)
         this.t1 = performance.now()
     },
     mounted() {
